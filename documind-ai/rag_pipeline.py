@@ -10,7 +10,7 @@ from typing import Any, Callable
 import numpy as np
 
 EMBEDDING_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
-GEMINI_MODEL_NAME = "gemini-2.5-flash"
+GEMINI_MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
 RELEVANCE_THRESHOLD = 0.18
 SUMMARY_SECTION_CHARS = 12_000
 SUMMARY_REQUEST_PAUSE_SECONDS = 0.4
@@ -122,9 +122,17 @@ def _friendly_provider_error(error: Exception) -> GeminiServiceError:
     """Map provider failures to useful text without reflecting credential data."""
     status = getattr(error, "status_code", None) or getattr(error, "code", None)
     normalized = f"{status or ''} {type(error).__name__}".lower()
+    if "404" in normalized or "not_found" in normalized or "notfound" in normalized:
+        return GeminiServiceError(
+            "The configured Gemini model is unavailable. Set GEMINI_MODEL to a currently supported model and restart the app."
+        )
     if "429" in normalized or "resourceexhausted" in normalized or "quota" in normalized:
         return GeminiServiceError(
             "Gemini's request limit or quota was reached. Wait briefly, check your Gemini quota, and try again."
+        )
+    if "503" in normalized or "servererror" in normalized:
+        return GeminiServiceError(
+            "Gemini is temporarily experiencing high demand or an outage. Wait briefly and try again."
         )
     if (
         "401" in normalized

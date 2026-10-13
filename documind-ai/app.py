@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 MAX_UPLOAD_MB = 30
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
 EMBEDDING_MODEL = "all-MiniLM-L6-v2 (local)"
 
 

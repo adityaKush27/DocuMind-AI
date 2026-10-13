@@ -48,7 +48,7 @@ Never commit `.env`. For Replit, use **Tools → Secrets** instead of writing a 
 2. `pdf_processor.py` creates approximately 500-character passages with an 80-character overlap and preserves source page numbers.
 3. FastEmbed runs the `sentence-transformers/all-MiniLM-L6-v2` model locally and creates normalized embeddings, cached in memory for the current Streamlit server process.
 4. The question is embedded and compared with stored vectors using cosine similarity.
-5. Up to three relevant passages are sent to `gemini-2.5-flash` with instructions to stay within the supplied context.
+5. Up to three relevant passages are sent to `gemini-3.8-flash` with instructions to stay within the supplied context. Set `GEMINI_MODEL` to override the default if your account uses a different supported model.
 6. The UI displays the answer alongside the source PDF, page numbers, and expandable retrieved context.
 
 The local embedding model does not require a Gemini key. Gemini does; without `GEMINI_API_KEY`, no AI answer or summary is fabricated.
