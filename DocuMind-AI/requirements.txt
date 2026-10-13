@@ -1,0 +1,6 @@
+streamlit>=1.42
+pypdf>=5.0
+fastembed>=0.9
+numpy>=1.26
+google-genai>=1.0
+python-dotenv>=1.0
