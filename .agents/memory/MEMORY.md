@@ -1,0 +1,1 @@
+- [Python embedding package resolution](python-embedding-resolution.md) — Replit may direct `sentence-transformers` to a PyTorch-only index; use the same MiniLM model through FastEmbed when blocked.
